@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webhook Data</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="text-center pt-3">
+      <button id="clear-db-btn" class="btn btn-danger">Clear Database</button>
+    </div>
+    <div class="container mt-5">
+      <h1 class="mb-4">Webhook Data</h1>
+      <div class="table-responsive">
+        <div id="webhook-entries" class="list-group"></div>
+      </div>
+    </div>
+
+    <script>
+      function formatEntry(item) {
+        let formattedEntry = "";
+
+        switch (item.action) {
+          case "push":
+            formattedEntry = `${item.author} pushed to ${
+              item.to_branch
+            } on ${formatTimestamp(item.timestamp)}`;
+            break;
+          case "opened":
+            formattedEntry = `${item.author} submitted a pull request from ${
+              item.from_branch
+            } to ${item.to_branch} on ${formatTimestamp(item.timestamp)}`;
+            break;
+          case "merge":
+            formattedEntry = `${item.author} merged branch ${
+              item.from_branch
+            } to ${item.to_branch} on ${formatTimestamp(item.timestamp)}`;
+            break;
+          default:
+            formattedEntry = `${item.author} ${item.action} on ${
+              item.to_branch
+            } at ${formatTimestamp(item.timestamp)}`;
+        }
+
+        return formattedEntry;
+      }
+
+      function formatTimestamp(timestamp) {
+        // You can use a more complex date formatting library like moment.js, but here's a simple example
+        const date = new Date(timestamp);
+        return date.toLocaleString("en-US", { timeZone: "UTC" });
+      }
+
+      function fetchData() {
+        fetch("/data")
+          .then((response) => response.json())
+          .then((data) => {
+            const webhookEntries = document.getElementById("webhook-entries");
+            webhookEntries.innerHTML = ""; // Clear existing entries
+            data.forEach((item) => {
+              const entryDiv = document.createElement("div");
+              entryDiv.classList.add("list-group-item");
+              entryDiv.textContent = formatEntry(item);
+              webhookEntries.appendChild(entryDiv);
+            });
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      }
+
+      fetchData();
+      setInterval(fetchData, 5000); // 60000 milliseconds = 60 seconds
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,47 +1,54 @@
-# Dev Assessment - Webhook Receiver
+## Webhook-repo
+This is Webhook-repo for action-repo please refer to https://github.com/HarshalPatel21/action-repo/
+*********
 
-Please use this repository for constructing the Flask webhook receiver.
+### Getting Started
 
-*******************
+install the following:
 
-## Setup
+`
+Flask
+`
+`
+Flask-Cors
+`
+`
+Flask-Login
+`
+`
+Flask-PyMongo
+`
+`
+pymongo
+`
 
-* Create a new virtual environment
+to do so 
 
-```bash
-pip install virtualenv
+Clone repo to your local machine using :
+
+```
+git clone https://github.com/HarshalPatel21/webhook-repo.git
 ```
 
-* Create the virtual env
 
-```bash
-virtualenv venv
+Navigate to the frontend directory and install requirements:
+
+```
+cd tsk-public-assignment-webhook-repo
 ```
 
-* Activate the virtual env
+install requirements
 
-```bash
-source venv/bin/activate
 ```
-
-* Install requirements
-
-```bash
 pip install -r requirements.txt
 ```
 
-* Run the flask application (In production, please use Gunicorn)
+run the app
 
-```bash
+```
 python run.py
 ```
 
-* The endpoint is at:
+### Launch 
 
-```bash
-POST http://127.0.0.1:5000/webhook/receiver
-```
-
-You need to use this as the base and setup the flask app. Integrate this with MongoDB (commented at `app/extensions.py`)
-
-*******************
+once both services are running visit `http://ai-planet:65519/` 

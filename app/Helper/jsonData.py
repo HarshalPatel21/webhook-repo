@@ -16,28 +16,28 @@ def jsonDataParser(data , webhook_event):
             ref = data.get('ref', 'Unknown')
             from_branch = ref.split('/')[-1] if '/' in ref else 'Unknown'
             
-            # Check if any commit message indicates a merge
+            
             commits = data.get('commits', [])
             is_merge = any('Merge' in commit.get('message', '') for commit in commits)
             to_branch = 'Unknown'
             
             if is_merge:
                 action = 'merge'
-                to_branch = from_branch  # Placeholder, adjust as needed
+                to_branch = from_branch  
             else:
                 action = 'push'
             
-            # timestamp = datetime.utcnow()
+           
             timestamp = time
     else:
-        # Default values for other events
+        
         from_branch = 'Unknown'
         to_branch = 'Unknown'
-        # timestamp = datetime.utcnow()
+        
         timestamp = time
         print("*****"+timestamp)
     
-    # Prepare data for MongoDB
+   
     document = {
         'request_id': data.get('repository', {}).get('id', 'Unknown'),
         'author': author,

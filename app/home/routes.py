@@ -18,7 +18,6 @@ def get_data():
         cursor = db.webhooks.find().sort("timestamp",-1)
         data = list(cursor)
         
-        # Convert ObjectId to string
         for item in data:
             item['_id'] = str(item['_id'])
             
@@ -32,7 +31,7 @@ def get_data():
 def clear_database():
     db = getDb()
     try:
-        db['webhooks'].delete_many({})  # This clears all documents from the 'webhooks' collection
+        db['webhooks'].delete_many({})  
         return jsonify({"message": "Database cleared successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
